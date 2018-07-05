@@ -22,7 +22,7 @@ roscore
 
 --In ORB_SLAM2 somewhere--
 *Åpne en ny terminal, må åpnes ETTER pangolin steppet*
-rosrun ORB_SLAM2 Mono /home/nawan/ORB_SLAM2/Vocabulary/ORBvoc.txt /home/nawan/catkin_ws/src/microsoft_cam/CamCalib/Microsoft_calib_file.yaml
+rosrun ORB_SLAM2 Mono /home/havaa/ORB_SLAM2/Vocabulary/ORBvoc.txt /home/havaa/catkin_ws/src/microsoft_cam/CamCalib/Microsoft_calib_file.yaml
 
 --Run bag--
 rosbag play *rosbag name* (from where rosbag lives)
