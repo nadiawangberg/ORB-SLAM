@@ -4,7 +4,7 @@ The purpose of this ROS package is to publish a camera stream to the ROS topic c
 In this README replace usrname with your Linux username
 
 
-## RUNNING ORB_SLAM2
+## Running ORB_SLAM2
 ### 1. Setting up ROS
 Create a ROS workspace named catkin_ws by following this tutorial http://wiki.ros.org/ROS/Tutorials/InstallingandConfiguringROSEnvironment
 
@@ -19,7 +19,7 @@ https://github.com/raulmur/ORB_SLAM2
 ### 4. Pangolin (ORB_SLAM2 dependency)
 Clone the Pangolin github repo in your home folder from https://github.com/stevenlovegrove/Pangolin and get required Dependencies (see Pangolin README)
 
-##### running pangolin 
+#####Running pangolin:
 cd Pangolin
 *evt drep build som bor i pangolin*
 mkdir build
@@ -29,15 +29,13 @@ cmake --build .
 
 ### 5. Run ORB_SLAM regularly with monocular example video
 https://github.com/raulmur/ORB_SLAM2#kitti-dataset
+
 Run KITTI Dataset example with ORB_SLAM2 to check if things are working
 
 ./Examples/Monocular/mono_kitti Vocabulary/ORBvoc.txt Examples/Monocular/KITTI00-02.yaml /home/usrname/Downloads/dataset/sequences/00
 
+If you followed step 1-6 and everything ran smoothly you can continune and make ORB_SLAM2 work with ROS. If you have issues with step 1-6 you can check the troubleshoot guide at the end of this README.
 
-### 6. Run ORB_SLAM2 with ROS
-Run ORB_SLAM2 node by following this guide
-
-If you followed step 1-6 and everything ran smoothly you can continune and make ORB_SLAM2 work with ROS. If you have issues you can check the troubleshoot at the end of this README.
 
 
 
@@ -45,7 +43,6 @@ If you followed step 1-6 and everything ran smoothly you can continune and make 
 
 
 ## RUN ORB-SLAM2 WITH ROS
-
 ### 1. Initializing ROS
 cd ~/catkin_ws
 source devel/setup.bash
@@ -62,14 +59,16 @@ chmod +x build_ros.sh
 
 ### 3. Running ORB_SLAM2 node
 
+https://github.com/raulmur/ORB_SLAM2#7-ros-examples
+
 rosrun ORB_SLAM2 Mono /home/usrname/ORB_SLAM2/Vocabulary/ORBvoc.txt /home/usrname/catkin_ws/src/microsoft_cam/CamCalib/Microsoft_R.yaml
 
 ### 4. Run camera driver node
 rosrun microsoft_cam microsoft_cam
 
 ### Run rosbag
-(can be ran instead of camera driver if you have rosbags)
 rosbag play *rosbag name*
+(can be ran instead of camera driver if you have rosbags)
 
 
 
@@ -94,25 +93,26 @@ cmake ..
 cmake --build .
 
 
-## Is the end of your bashrc script configurated for ROS ORB-SLAM?
-#Single Computer ROS
+### Is the end of your bashrc script configurated for ROS ORB-SLAM?
+\#Single Computer ROS
 export ROS_HOSTNAME=localhost
 export ROS_MASTER_URI=http://localhost:11311
 
-#Sourcing ROS
+\#Sourcing ROS
 source /home/usrname/visnav_ws/devel/setup.bash
 source /opt/ros/kinetic/setup.bash
 source ~/catkin_ws/devel/setup.bash
 
-# Virtual Environment Wrapper
+\# Virtual Environment Wrapper
 source /usr/local/bin/virtualenvwrapper.sh
 
-# Virtual Environment Wrapper
+\# Virtual Environment Wrapper
 
 export ROS_PACKAGE_PATH=${ROS_PACKAGE_PATH}:/home/nawan/ORB_SLAM2/Examples/ROS
 
 
-### OpenCV error message: Undefined reference to symbol '_ZN5boost6system15system_categoryEv'--
+### OpenCV error message
+**Undefined reference to symbol '_ZN5boost6system15system_categoryEv'--**
 https://github.com/raulmur/ORB_SLAM2/issues/494
 Following this guide, mainly using AdrichCabreras response from Jan10 worked for us.
 
