@@ -1,4 +1,4 @@
-#ROS camera driver
+# ROS camera driver
 The purpose of this ROS package is to publish a camera stream to the ROS topic camera/image_raw. The package has a driver node called cam_driver which takes a camera stream as input and publishes it to the topic camera/image_raw. This package also has a folder CamCalib which contains code for camera calibration and .yaml calibration files.
 
 In this README replace usrname with your Linux username
@@ -85,7 +85,7 @@ rosbag play *rosbag name*
 
 ## Troubleshooting
 
-###Pangolin issues
+### Pangolin issues
 cd Pangolin
 *drep build som bor i pangolin*
 mkdir build
@@ -94,7 +94,7 @@ cmake ..
 cmake --build .
 
 
-##Is the end of your bashrc script configurated for ROS ORB-SLAM?
+## Is the end of your bashrc script configurated for ROS ORB-SLAM?
 #Single Computer ROS
 export ROS_HOSTNAME=localhost
 export ROS_MASTER_URI=http://localhost:11311
