@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(microsoft_cam)
+project(ROS_cam_driver)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -13,6 +13,7 @@ find_package(OpenCV REQUIRED)
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
+  tf
   std_msgs
   message_generation
 
@@ -109,7 +110,7 @@ add_message_files(FILES Num.msg)
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
   #INCLUDE_DIRS include
-  LIBRARIES microsoft_cam
+  LIBRARIES ROS_cam_driver
   CATKIN_DEPENDS roscpp rospy sensor_msgs std_msgs geometry_msgs mavros_msgs cv_bridge
   #DEPENDS system_lib
 )
@@ -213,9 +214,13 @@ add_executable(listener2 src/listener2.cpp)
 target_link_libraries(listener2 ${catkin_LIBRARIES})
 add_dependencies(listener2 beginner_tutorials_generate_messages_cpp)
 
-add_executable(microsoft_cam src/microsoft_cam_nodelet.cpp)
-target_link_libraries(microsoft_cam ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+add_executable(cam_driver_node src/cam_driver_nodelet.cpp)
+target_link_libraries(cam_driver_node ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 #add_dependencies(microsoft_cam beginner_tutorials_generate_messages_cpp)
+
+
+add_executable(pose_node src/pose_nodelet.cpp)
+target_link_libraries(pose_node ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 
 
 
