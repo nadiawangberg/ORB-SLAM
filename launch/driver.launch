@@ -1,0 +1,15 @@
+  <launch>
+    <arg name="usr"/>
+    <arg name="cam_color" default= "R" />
+    <arg name="orb_slam" default= "true"/>
+    <!-- camera driver node -->
+    <node pkg = "ROS_cam_driver" type= "cam_driver_node" name="cam_driver"/>
+
+ <node if="$(arg orb_slam)" pkg= "ORB_SLAM2" type= "Mono" name= "ros_mono" args= "/home/$(arg usr)/ORB_SLAM2/Vocabulary/ORBvoc.txt /home/$(arg usr)/catkin_ws/src/ROS_cam_driver/CamCalib/Microsoft_$(arg cam_color).yaml" />
+
+    <node pkg= "ROS_cam_driver" type= "pose_node" name="pose_regulation"/>
+
+
+
+   </launch>
+

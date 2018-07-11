@@ -85,6 +85,13 @@ rosbag play *rosbag name*
 * *(we used version 3.3.1)* *
 
 
+##TF
+
+#### Checking Pose from Orb_Slam
+rosrun tf tf_echo camera_link camera_pose
+
+This command prints out the rotation and translation of the drone. This rotation and translation is found from ORB_SLAM2
+
 ## Troubleshooting
 
 ### Pangolin issues
@@ -133,8 +140,6 @@ ${PROJECT_SOURCE_DIR}/../../../Thirdparty/g2o/lib/libg2o.so
 ${PROJECT_SOURCE_DIR}/../../../lib/libORB_SLAM2.so
 \-lboost_system
 )
-
-
 
 
 We only did what the above post said, see link above for discussion around this error message. 
