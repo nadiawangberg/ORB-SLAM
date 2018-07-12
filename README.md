@@ -121,6 +121,20 @@ source /usr/local/bin/virtualenvwrapper.sh
 export ROS_PACKAGE_PATH=${ROS_PACKAGE_PATH}:/home/nawan/ORB_SLAM2/Examples/ROS
 
 
+### Error, problem finding packages / files
+**[rosbuild] rospack found package "ORB_SLAM2" at "", but the current directory is "/home/nawan/ORB_SLAM2/Examples/ROS/ORB_SLAM2".  You should double-check your ROS_PACKAGE_PATH to ensure that packages are found in the correct precedence order.**
+
+#####OR
+c++: fatal error: input file ‘../lib/libORB_SLAM2.so’ is the same as output file
+compilation terminated.
+
+
+Error can likely be fixed by typing: 
+export ROS_PACKAGE_PATH=${ROS_PACKAGE_PATH}:/home/nawan/ORB_SLAM2/Examples/ROS into terminal
+
+
+
+
 ### OpenCV error message
 **Undefined reference to symbol '_ZN5boost6system15system_categoryEv'--**
 https://github.com/raulmur/ORB_SLAM2/issues/494
@@ -142,7 +156,15 @@ ${PROJECT_SOURCE_DIR}/../../../lib/libORB_SLAM2.so
 )
 
 
-We only did what the above post said, see link above for discussion around this error message. 
+We only did what the above post said, see link above for discussion around this error message.
+
+
+
+##Debug
+**see command-line arguments for a launch file**
+roslaunch --ros-args ROS_cam_driver driver.launch
+
+
 
 
 
