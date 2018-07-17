@@ -16,7 +16,7 @@ int main(int argc, char** argv){
   	while (nh.ok()){
     	tf::StampedTransform transform;
     	try{
-      		listener.lookupTransform("camera_link", "camera_pose",
+      		listener.lookupTransform("world", "camera_pose",
                                ros::Time(0), transform);
 
 
@@ -24,8 +24,9 @@ int main(int argc, char** argv){
       		tf::Matrix3x3 rotation_m = transform.getBasis();
       		tf::Quaternion rotation_q = transform.getRotation();
 
-      		//ROS_INFO("x: %f", translation.getX());
-      		//ROS_INFO("y: %f", translation.getY());
+          ROS_INFO("From pose_nodelet.cpp");
+      		ROS_INFO("x: %f", translation.getX());
+      		ROS_INFO("y: %f", translation.getY());
       		//ROS_INFO("z: %f", translation.getZ());
 
 

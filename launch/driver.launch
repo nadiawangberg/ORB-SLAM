@@ -1,6 +1,6 @@
   <launch>
     <arg name="usr" default= "nawan" doc="your Linux username"/>
-    <arg name="cam_color" default= "B" doc="color of the microsoft camera tape"/>
+    <arg name="cam_color" default= "B" doc="color of the microsoft camera tape. Red = R, Black = B"/>
     <arg name="rviz" default= "false" doc="opens RViz if set to true" />
     <arg name="orb_slam" default= "true" doc="runs ORB_SLAM2 if set to true"/>
 

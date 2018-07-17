@@ -129,8 +129,14 @@ c++: fatal error: input file ‘../lib/libORB_SLAM2.so’ is the same as output 
 compilation terminated.
 
 
+#####OR
+\#ROS path [0]=...
+\#ROS path [1]=...
+\#ROS path [2]=...
+
+
 Error can likely be fixed by typing: 
-export ROS_PACKAGE_PATH=${ROS_PACKAGE_PATH}:/home/nawan/ORB_SLAM2/Examples/ROS into terminal
+**export ROS_PACKAGE_PATH=${ROS_PACKAGE_PATH}:/home/nawan/ORB_SLAM2/Examples/ROS** into terminal
 
 
 
