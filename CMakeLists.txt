@@ -214,12 +214,12 @@ add_executable(listener2 src/listener2.cpp)
 target_link_libraries(listener2 ${catkin_LIBRARIES})
 add_dependencies(listener2 beginner_tutorials_generate_messages_cpp)
 
-add_executable(cam_driver_node src/cam_driver_nodelet.cpp)
+add_executable(cam_driver_node src/cam_driver_node.cpp)
 target_link_libraries(cam_driver_node ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 #add_dependencies(microsoft_cam beginner_tutorials_generate_messages_cpp)
 
 
-add_executable(pose_node src/pose_nodelet.cpp)
+add_executable(pose_node src/pose_node.cpp)
 target_link_libraries(pose_node ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 
 
