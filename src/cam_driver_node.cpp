@@ -11,7 +11,7 @@
 
 int main(int argc, char **argv)
 {
-	ros::init(argc, argv, "microsoft_cam");
+	ros::init(argc, argv, "cam_driver");
 	ros::NodeHandle n;
 
 	ros::Publisher image_pub = n.advertise<sensor_msgs::Image>("/camera/image_raw", 1);

@@ -2,14 +2,15 @@
     <arg name="usr" default= "nawan" doc="your Linux username"/>
     <arg name="cam_color" default= "B" doc="color of the microsoft camera tape. Red = R, Black = B"/>
     <arg name="rviz" default= "false" doc="opens RViz if set to true" />
-    <arg name="orb_slam" default= "true" doc="runs ORB_SLAM2 if set to true"/>
+    <arg name="orb_slam" default= "true" doc="runs ORB_SLAM2 if set to true runs SVO if set to false"/>
+    <arg name="svo" default="false" doc="runs SVO if set to true"/>
 
-    <node if="$(arg orb_slam)" pkg= "ORB_SLAM2" type= "Mono" name= "ros_mono" args= "/home/$(arg usr)/ORB_SLAM2/Vocabulary/ORBvoc.txt /home/$(arg usr)/catkin_ws/src/ROS_cam_driver/CamCalib/Microsoft_$(arg cam_color).yaml" />
+    <node if="$(arg orb_slam)" pkg= "ORB_SLAM2" type= "Mono" name= "ros_mono" args= "/home/$(arg usr)/ORB_SLAM2/Vocabulary/ORBvoc.txt /home/$(arg usr)/catkin_ws/src/vo_framework/CamCalib/Microsoft_$(arg cam_color).yaml" />
 
    <node if="$(arg rviz)" pkg="rviz" type="rviz" name="rviz" />
 
-   <node pkg="ROS_cam_driver" type="cam_driver_node" name="cam_driver"/>
-   <node pkg="ROS_cam_driver" type="pose_node" name="pose_regulation"/>
+   <node pkg="vo_framework" type="cam_driver_node" name="cam_driver"/>
+   <node pkg="vo_framework" type="pose_node" name="pose_regulation"/>
 
   </launch>
 

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(ROS_cam_driver)
+project(vo_framework)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -110,7 +110,7 @@ add_message_files(FILES Num.msg)
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
   #INCLUDE_DIRS include
-  LIBRARIES ROS_cam_driver
+  LIBRARIES vo_framework
   CATKIN_DEPENDS roscpp rospy sensor_msgs std_msgs geometry_msgs mavros_msgs cv_bridge
   #DEPENDS system_lib
 )
@@ -205,14 +205,6 @@ include_directories(
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
 
-
-add_executable(talker2 src/talker2.cpp)
-target_link_libraries(talker2 ${catkin_LIBRARIES})
-add_dependencies(talker2 beginner_tutorials_generate_messages_cpp)
-
-add_executable(listener2 src/listener2.cpp)
-target_link_libraries(listener2 ${catkin_LIBRARIES})
-add_dependencies(listener2 beginner_tutorials_generate_messages_cpp)
 
 add_executable(cam_driver_node src/cam_driver_node.cpp)
 target_link_libraries(cam_driver_node ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
