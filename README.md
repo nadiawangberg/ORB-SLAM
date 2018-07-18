@@ -1,7 +1,14 @@
-# ROS camera driver
-The purpose of this ROS package is to publish a camera stream to the ROS topic camera/image_raw. The package has a driver node called cam_driver which takes a camera stream as input and publishes it to the topic camera/image_raw. This package also has a folder CamCalib which contains code for camera calibration and .yaml calibration files.
+# Visual Odometry Framework
+The purpose of this ROS package is to work as a framework for visual odometry algorithms. The algorithms we have used are ORB SLAM and SVO. vo_framework is a ROS package and should be put in your catkin workspace. 
 
-In this README replace usrname/nawan/hvaadal with your Linux username
+##vo_framework content
+
+* **camera driver nodes:** A ROS node that publishes a camera stream to the ROS topic camera/image_raw
+* **camera calibration:** Guides for camera calibration and calibration files for certain cameras (see README in CamCalib)
+* **pose regulation node:** A node which takes a tf pose from ORB_SLAM/SVO as input and regulates drone through MAVROS
+
+
+In this README replace usrname, USRNAME, nawan and hvaadal with your Linux username
 
 
 ## Running ORB_SLAM2
