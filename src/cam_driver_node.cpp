@@ -18,7 +18,7 @@ int main(int argc, char **argv)
 	ros::Rate loop_rate(30);
 	int count = 0;
 
-	cv::VideoCapture input_stream(1);
+	cv::VideoCapture input_stream(0);
 
 	if(!input_stream.isOpened())
 	{

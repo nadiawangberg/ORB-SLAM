@@ -1,46 +1,126 @@
 #include <ros/ros.h>
+#include <geometry_msgs/PoseStamped.h>
+#include <mavros_msgs/CommandBool.h>
+#include <mavros_msgs/SetMode.h>
+#include <mavros_msgs/State.h>
+
 #include <tf/transform_listener.h>
 #include "geometry_msgs/TransformStamped.h"
-#include "tf/transform_datatypes.h"
-#include <turtlesim/Pose.h>
-#include <geometry_msgs/Twist.h>
-#include <turtlesim/Spawn.h>
-
-int main(int argc, char** argv){
-	ros::init(argc, argv, "pose_listener");
-	ros::NodeHandle nh;
-
-	tf::TransformListener listener;
-
-	ros::Rate rate(1.0);
-  	while (nh.ok()){
-    	tf::StampedTransform transform;
-    	try{
-      		listener.lookupTransform("world", "camera_pose",
-                               ros::Time(0), transform);
 
 
-      		tf::Vector3 translation = transform.getOrigin();
-      		tf::Matrix3x3 rotation_m = transform.getBasis();
-      		tf::Quaternion rotation_q = transform.getRotation();
+mavros_msgs::State current_state;
+void state_cb(const mavros_msgs::State::ConstPtr& msg){
+    current_state = *msg;
+}
 
-          ROS_INFO("From pose_nodelet.cpp");
-      		ROS_INFO("x: %f", translation.getX());
-      		ROS_INFO("y: %f", translation.getY());
-      		//ROS_INFO("z: %f", translation.getZ());
+int main(int argc, char **argv)
+{
+
+    ros::init(argc, argv, "offb_node");
+    ros::NodeHandle nh;
+
+    tf::TransformListener listener;
+
+    ros::Subscriber state_sub = nh.subscribe<mavros_msgs::State>
+            ("mavros/state", 10, state_cb);
+    ros::Publisher local_pos_pub = nh.advertise<geometry_msgs::PoseStamped>
+            ("mavros/setpoint_position/local", 10);
+    ros::ServiceClient arming_client = nh.serviceClient<mavros_msgs::CommandBool>
+            ("mavros/cmd/arming");
+    ros::ServiceClient set_mode_client = nh.serviceClient<mavros_msgs::SetMode>
+            ("mavros/set_mode");
+
+    //the setpoint publishing rate MUST be faster than 2Hz
+    ros::Rate rate(20.0);
+
+    // wait for FCU connection
+    while(ros::ok() && !current_state.connected){
+        ros::spinOnce();
+        rate.sleep();
+    }
+
+    geometry_msgs::PoseStamped pose;
+    pose.pose.position.x = 0;
+    pose.pose.position.y = 0;
+    pose.pose.position.z = 2;
+
+    //send a few setpoints before starting
+    for(int i = 100; ros::ok() && i > 0; --i){
+        local_pos_pub.publish(pose);
+        ros::spinOnce();
+        rate.sleep();
+    }
+
+    mavros_msgs::SetMode offb_set_mode;
+    offb_set_mode.request.custom_mode = "OFFBOARD";
+
+    mavros_msgs::CommandBool arm_cmd;
+    arm_cmd.request.value = true;
+
+    ros::Time last_request = ros::Time::now();
+
+    while(ros::ok()){
+
+        // Take off
+        if( current_state.mode != "OFFBOARD" &&
+            (ros::Time::now() - last_request > ros::Duration(5.0))){
+            if( set_mode_client.call(offb_set_mode) &&
+                offb_set_mode.response.mode_sent){
+                ROS_INFO("Offboard enabled");
+            }
+            last_request = ros::Time::now();
+        } else {
+            if( !current_state.armed &&
+                (ros::Time::now() - last_request > ros::Duration(5.0))){
+                if( arming_client.call(arm_cmd) &&
+                    arm_cmd.response.success){
+                    ROS_INFO("Vehicle armed");
+                }
+                last_request = ros::Time::now();
+            }
+        }
+
+        local_pos_pub.publish(pose);
+
+        //Fly
+        if (current_state.armed && current_state.mode == "OFFBOARD" && ros::Time::now() - last_request > ros::Duration(5.0)) {
+            tf::StampedTransform transform;
+            try{
+                listener.lookupTransform("world", "camera_pose",
+                                   ros::Time(0), transform);
 
 
-
-    	}
-    	catch (tf::TransformException &ex) {
-      		ROS_ERROR("%s",ex.what());
-      		ros::Duration(1.0).sleep();
-      		continue;
-    	}
-	}
+                tf::Vector3 translation = transform.getOrigin();
+                tf::Matrix3x3 rotation_m = transform.getBasis();
+                tf::Quaternion rotation_q = transform.getRotation();
 
 
+                pose.pose.position.x = translation.getX();
+                pose.pose.position.y = translation.getY();
+                quaternionTFToMsg(rotation_q, pose.pose.orientation);
 
 
+                ROS_INFO("x: %f", pose.pose.position.x);
+                ROS_INFO("y: %f", pose.pose.position.y);
 
+                //ROS_INFO("x: %f", translation.getX());
+                //ROS_INFO("y: %f", translation.getY());
+                //ROS_INFO("z: %f", translation.getZ());
+
+                local_pos_pub.publish(pose);
+
+            }
+            catch (tf::TransformException &ex) {
+                ROS_ERROR("%s",ex.what());
+                ros::Duration(1.0).sleep(); // remove??
+                continue;
+            }
+
+        }
+
+        ros::spinOnce();
+        rate.sleep();
+    }
+
+    return 0;
 }
