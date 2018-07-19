@@ -84,6 +84,7 @@ int main(int argc, char **argv)
 
         //Fly
         if (current_state.armed && current_state.mode == "OFFBOARD" && ros::Time::now() - last_request > ros::Duration(5.0)) {
+            
             tf::StampedTransform transform;
             try{
                 listener.lookupTransform("world", "camera_pose",

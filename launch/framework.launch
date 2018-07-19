@@ -1,0 +1,31 @@
+  <launch>
+    <arg name="usr" default= "nawan" doc="your Linux username"/>    
+    <arg name="fcu_url" default="udp://:14540@192.168.1.36:14557" doc= "the IP / port of the computer running the simulation"/>
+    <arg name="cam" default= "Microsoft_B" doc="name of the camera calibration file found in CamCalib/calib_param_files"/>
+    <arg name="rviz" default= "false" doc="opens RViz if set to true" />
+    <arg name="orb_slam" default= "false" doc="runs ORB_SLAM2 if set to true"/>
+    <arg name="svo" default="false" doc="runs SVO if set to true"/>
+
+    <!-- <env name="ROS_PACKAGE_PATH" value="${ROS_PACKAGE_PATH}:/home/$(arg usr)/ORB_SLAM2/Examples/ROS" /> -->
+
+    <node if="$(arg orb_slam)" pkg= "ORB_SLAM2" type= "Mono" name="ros_mono" 
+          args= "/home/$(arg usr)/ORB_SLAM2/Vocabulary/ORBvoc.txt 
+          /home/$(arg usr)/catkin_ws/src/vo_framework/CamCalib/calib_param_files/$(arg cam).yaml"/>
+
+
+    <node if="$(arg svo)" pkg="rviz" type="rviz" name="rviz" args="-d /home/$(arg usr)/catkin_ws/src/rpg_svo/svo_ros/rviz_config.rviz"/>
+
+    <node if="$(eval arg('cam') == 'Microsoft_B' or arg('cam') == 'Microsoft_R')" pkg="vo_framework" type="cam_driver_node" name="cam_driver"/>
+    <node pkg="vo_framework" type="pose_node" name="pose_regulation" output="screen"/>
+
+
+    <include file="$(find mavros)/launch/px4.launch">
+	      <arg name="fcu_url" value="$(arg fcu_url)" />
+    </include>
+
+    <include if="$(arg svo)" file="$(find svo_ros)/launch/test_rig3.launch"> </include>
+
+    <include if="$(eval arg('cam') == 'Ueye_flat')" file="/home/$(arg usr)/visnav_ws/launch/camera_and_view.launch"> </include>
+
+  </launch>
+
